@@ -1,1 +1,149 @@
+#include <WiFi.h>
+#include "ThingSpeak.h"
 
+// Wi-Fi credentials
+const char* ssid = "ssid"; //your SS ID
+const char* password = "password"; //ypur password
+
+// ESP32 Analog Pins
+const int tempSensorPin = 34; // Temperature sensor connected to GPIO34
+const int phSensorPin = 35;   // pH sensor connected to GPIO35
+const int ldrSensorPin = 32;  // LDR sensor connected to GPIO32
+
+// ThingSpeak API Key and Server
+unsigned long channelID = 2820022;  // Replace with your channel ID
+const char* apiKey = "H0IE982DY51YHO10";  // Replace with your Write API Key
+
+WiFiClient client;
+
+// Sensor value ranges for simulation
+const float tempMin = 20.0;   // Minimum temperature (in °C)
+const float tempMax = 30.0;   // Maximum temperature (in °C)
+const float phMin = 6.0;      // Minimum pH value
+const float phMax = 7.5;      // Maximum pH value
+const int ldrMin = 500;       // Minimum light intensity
+const int ldrMax = 900;       // Maximum light intensity
+
+void setup() {
+  Serial.begin(115200);
+
+  // Connect to Wi-Fi
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to Wi-Fi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.print(".");
+  }
+  Serial.println("\nConnected to Wi-Fi");
+
+  // Initialize ThingSpeak
+  ThingSpeak.begin(client);
+}
+
+void loop() {
+  // Simulate temperature sensor reading
+  float temperature = random(tempMin * 100, tempMax * 100) / 100.0; // Generate temperature in range
+  // Simulate pH sensor reading
+  float phValue = random(phMin * 100, phMax * 100) / 100.0;         // Generate pH value in range
+  // Simulate LDR sensor reading
+  int lightLevel = random(ldrMin, ldrMax);                          // Generate LDR value in range
+
+  Serial.println("Sending data to ThingSpeak...");
+
+  // Write data to ThingSpeak fields
+  ThingSpeak.setField(1, temperature);
+  ThingSpeak.setField(2, phValue);
+  ThingSpeak.setField(3, lightLevel);
+
+  // Execute ThingSpeak write operation
+  int response = ThingSpeak.writeFields(channelID, apiKey);
+
+  if (response == 200) {
+    Serial.println("Data sent successfully");
+    Serial.print("Temperature: ");
+    Serial.println(temperature);
+    Serial.print("pH: ");
+    Serial.println(phValue);
+    Serial.print("Light Level: ");
+    Serial.println(lightLevel);
+  } else {
+    Serial.print("Error: ");
+    Serial.println(response);
+  }
+
+  delay(15000); // Wait 15 seconds (ThingSpeak allows one update every 15 seconds)
+}#include <WiFi.h>
+#include "ThingSpeak.h"
+
+// Wi-Fi credentials
+const char* ssid = "Varsha";
+const char* password = "ganga1234@";
+
+// ESP32 Analog Pins
+const int tempSensorPin = 34; // Temperature sensor connected to GPIO34
+const int phSensorPin = 35;   // pH sensor connected to GPIO35
+const int ldrSensorPin = 32;  // LDR sensor connected to GPIO32
+
+// ThingSpeak API Key and Server
+unsigned long channelID = 2820022;  // Replace with your channel ID
+const char* apiKey = "H0IE982DY51YHO10";  // Replace with your Write API Key
+
+WiFiClient client;
+
+// Sensor value ranges for simulation
+const float tempMin = 20.0;   // Minimum temperature (in °C)
+const float tempMax = 30.0;   // Maximum temperature (in °C)
+const float phMin = 6.0;      // Minimum pH value
+const float phMax = 7.5;      // Maximum pH value
+const int ldrMin = 500;       // Minimum light intensity
+const int ldrMax = 900;       // Maximum light intensity
+
+void setup() {
+  Serial.begin(115200);
+
+  // Connect to Wi-Fi
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to Wi-Fi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.print(".");
+  }
+  Serial.println("\nConnected to Wi-Fi");
+
+  // Initialize ThingSpeak
+  ThingSpeak.begin(client);
+}
+
+void loop() {
+  // Simulate temperature sensor reading
+  float temperature = random(tempMin * 100, tempMax * 100) / 100.0; // Generate temperature in range
+  // Simulate pH sensor reading
+  float phValue = random(phMin * 100, phMax * 100) / 100.0;         // Generate pH value in range
+  // Simulate LDR sensor reading
+  int lightLevel = random(ldrMin, ldrMax);                          // Generate LDR value in range
+
+  Serial.println("Sending data to ThingSpeak...");
+
+  // Write data to ThingSpeak fields
+  ThingSpeak.setField(1, temperature);
+  ThingSpeak.setField(2, phValue);
+  ThingSpeak.setField(3, lightLevel);
+
+  // Execute ThingSpeak write operation
+  int response = ThingSpeak.writeFields(channelID, apiKey);
+
+  if (response == 200) {
+    Serial.println("Data sent successfully");
+    Serial.print("Temperature: ");
+    Serial.println(temperature);
+    Serial.print("pH: ");
+    Serial.println(phValue);
+    Serial.print("Light Level: ");
+    Serial.println(lightLevel);
+  } else {
+    Serial.print("Error: ");
+    Serial.println(response);
+  }
+
+  delay(15000); // Wait 15 seconds (ThingSpeak allows one update every 15 seconds)
+}
